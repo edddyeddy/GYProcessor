@@ -70,8 +70,8 @@ def outputExcel(dictList, fileName):
 if __name__ == "__main__":
     client = pymongo.MongoClient("mongodb://localhost:27017/")
     db = client["GYDatabase"]
-    gov = db['TianJinGov']
+    gov = db['天津市_汇总']
     
-    orgInfo = loadOrgInfo('./TianJin.txt')
-    outputExcel(itemFilter(gov, orgInfo),'TianJinGov.xlsx')
+    orgInfo = loadOrgInfo('./deptList/TianJin.txt')
+    outputExcel(itemFilter(gov, orgInfo),'天津市_汇总.xlsx')
     

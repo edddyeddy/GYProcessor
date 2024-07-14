@@ -22,7 +22,9 @@ def itemFilter(collection, orgInfo) -> dict:
         if item.get('data') is None:
             continue
         
-        content = item['data']['content']
+        content = item['data'].get('content')
+        if content is None:
+            continue
         org = getOrgInContent(content, orgInfo)
         if '省人民政府办公厅' in org and len(org) >= 3 or '省人民政府办公厅' not in org and len(org) >= 2:
             data = item['data'] 
@@ -71,8 +73,10 @@ def outputExcel(dictList, fileName):
 if __name__ == "__main__":
     client = pymongo.MongoClient("mongodb://localhost:27017/")
     db = client["GYDatabase"]
-    xiamenGov = db['HebeiGovRegulations']
+    col_name = "JiangsuGovRegulations"
+    prov = "JiangSu"
+    col = db[col_name]
     
-    orgInfo = loadOrgInfo('.deptList/Hebei.txt')
-    outputExcel(itemFilter(xiamenGov, orgInfo),'./output/HebeiGovRegulations.xlsx')
+    orgInfo = loadOrgInfo('./deptList/{}.txt'.format(prov))
+    outputExcel(itemFilter(col, orgInfo),'./output/{}.xlsx'.format(col_name))
     
